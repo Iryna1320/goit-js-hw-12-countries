@@ -12,9 +12,7 @@ function onSearch() {
 
   const nameInput = refs.input.value;
 
-  if (nameInput.length > 10) {
-    error.errorMsg();
-    clearInput();
+  if (!nameInput) {
     return;
   }
 
@@ -28,12 +26,13 @@ function renderCountry(country) {
   if (country.length > 1 && country.length <= 10) {
     const markup = countryList(country);
     refs.cardInput.insertAdjacentHTML('afterbegin', markup);
-  } else {
-    if (country.length == null) {
-      clearInput();
-      error.errorMsg();
-      return;
-    }
+  }
+  if (country.length > 10) {
+    refs.input.value = '';
+    error.errorMsg();
+    return;
+  }
+  if (country.length > 0 && country.length < 2) {
     const markup = countryCardTpl(country);
     refs.cardInput.insertAdjacentHTML('afterbegin', markup);
   }
@@ -41,8 +40,4 @@ function renderCountry(country) {
 
 function clearCard() {
   refs.cardInput.innerHTML = '';
-}
-
-function clearInput() {
-  refs.input.value = '';
 }
